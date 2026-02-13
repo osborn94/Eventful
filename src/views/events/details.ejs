@@ -1,0 +1,14 @@
+<h1><%= event.title %></h1>
+<p><%= event.description %></p>
+<p><%= event.location %></p>
+<p>
+  <%= event.price === 0 ? "Free Event" : "₦" + event.price %>
+</p>
+
+<% if (event.price === 0) { %>
+  <form method="POST" action="/events/<%= event.slug %>/attend">
+    <button>Attend Free Event</button>
+  </form>
+<% } else { %>
+  <a href="/checkout/<%= event._id %>">Buy Ticket</a>
+<% } %>

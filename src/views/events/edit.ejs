@@ -1,0 +1,38 @@
+<h2>Edit Event</h2>
+
+<form action="/creator/events/<%= event.slug %>?_method=PUT" method="POST">
+  
+  <div class="mb-3">
+    <label>Title</label>
+    <input type="text" name="title" value="<%= event.title %>" class="form-control">
+  </div>
+
+  <div class="mb-3">
+    <label>Description</label>
+    <textarea name="description" class="form-control">
+      <%= event.description %>
+    </textarea>
+  </div>
+
+  <div class="mb-3">
+    <label>Location</label>
+    <input type="text" name="location" value="<%= event.location %>" class="form-control">
+  </div>
+
+  <div class="col-md-6 mb-3">
+    <label class="form-label">Date</label>
+    <input 
+    type="datetime-local" 
+    name="date" 
+    class="form-control"
+    required
+    >
+  </div>
+
+  <div class="mb-3">
+    <label>Price</label>
+    <input type="number" name="price" value="<%= event.price %>" class="form-control">
+  </div>
+
+  <button class="btn btn-success">Update Event</button>
+</form>

@@ -1,0 +1,18 @@
+<h1><%= event.title %></h1>
+<p><%= event.description %></p>
+<p><%= event.location %></p>
+<p>₦<%= event.price %></p>
+
+<hr>
+
+<a href="/creator/events/<%= event.slug %>/edit" class="btn btn-warning">
+  Edit Details
+</a>
+
+<form action="/creator/events/<%= event.slug %>?_method=DELETE" 
+      method="POST" 
+      style="display:inline;">
+  <button type="submit" class="btn btn-danger">
+    Cancel Event
+  </button>
+</form>

@@ -1,0 +1,21 @@
+<h1>Your Tickets</h1>
+
+<% if (tickets.length === 0) { %>
+  <p>You have no tickets yet. Browse events and get your tickets now!</p>
+<% } else { %>
+
+  <% tickets.forEach(ticket => { %>
+    <div class="card mb-3 p-3">
+      <p><strong>Event:</strong> <%= ticket.event.title %></p>
+      <p><strong>Date:</strong> <%= ticket.event.date %></p>
+      <p><strong>Location:</strong> <%= ticket.event.location %></p>
+      <p><strong>Status:</strong> <%= ticket.paymentStatus %></p>
+
+      <h5>QR Code:</h5>
+      <img src="<%= ticket.qrCode %>" width="150" />
+
+      <p>Present this at the entrance</p>
+    </div>
+  <% }) %>
+
+<% } %>

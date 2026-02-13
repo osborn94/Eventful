@@ -1,0 +1,16 @@
+<h1>Your Events</h1>
+
+<form method="POST" action="/creator/events">
+  <input name="title" placeholder="Title" />
+  <input name="location" placeholder="Location" />
+  <input name="price" type="number" placeholder="Price (0 = Free)" />
+  <input name="date" type="date" />
+  <textarea name="description"></textarea>
+  <button>Create Event</button>
+</form>
+
+<hr />
+
+<% events.forEach(event => { %>
+  <p><%= event.title %></p>
+<% }) %>

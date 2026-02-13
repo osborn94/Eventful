@@ -1,0 +1,94 @@
+<h2 class="mb-4">Discover Events</h2>
+
+<% if (query.reminder === "success") { %>
+  <div class="alert alert-success">
+    Reminder set successfully ✅
+  </div>
+<% } %>
+
+
+<div class="row">
+  <% availableEvents.forEach(event => { %>
+    <div class="col-md-6 mb-3">
+      <div class="card shadow-sm p-3">
+        <h5><%= event.title %></h5>
+        <p><%= new Date(event.date).toDateString() %></p>
+        <a href="/events/<%= event.slug %>" class="btn btn-sm btn-primary">
+          View & Apply
+        </a>
+      </div>
+    </div>
+  <% }) %>
+</div>
+
+<hr class="my-5">
+
+<h4>My Applications</h4>
+
+<% if (appliedEvents.length === 0) { %>
+  <p>You haven't applied to any events yet.</p>
+<% } else { %>
+
+  <div class="row">
+    <% appliedEvents.forEach(event => { %>
+      <div class="col-md-6 mb-3">
+        <div class="card shadow-sm p-3">
+          <h5><%= event.title %></h5>
+          <p><%= new Date(event.date).toDateString() %></p>
+          <p><%= event.location %></p>
+          <p>You have bought ticket for this event.</p>
+
+          <form action="/reminders" method="POST" class="mt-2">
+            <input type="hidden" name="eventId" value="<%= event._id %>">
+
+            <div class="mb-2">
+              <label class="form-label">Remind me:</label>
+              <select name="reminderOption" class="form-select" id="reminderSelect" required>
+                <option value="10m">10 minutes before</option>
+                <option value="1h">1 hour before</option>
+                <option value="1d">1 day before</option>
+                <option value="custom">Custom time</option>
+              </select>
+            </div>
+
+            <div class="mb-2 d-none" id="customTimeWrapper">
+              <label class="form-label">Choose custom time:</label>
+              <input 
+                type="datetime-local" 
+                name="customReminderTime" 
+                class="form-control"
+              >
+            </div>
+
+            <button type="submit" class="btn btn-sm btn-outline-success">
+              Set Reminder
+            </button>
+          </form>
+
+
+        </div>
+      </div>
+    <% }) %>
+  </div>
+
+<% } %>
+
+<script>
+  const select = document.getElementById("reminderSelect");
+  const customWrapper = document.getElementById("customTimeWrapper");
+
+  select.addEventListener("change", function () {
+    if (this.value === "custom") {
+      customWrapper.classList.remove("d-none");
+    } else {
+      customWrapper.classList.add("d-none");
+    }
+  });
+</script>
+
+
+
+
+
+
+
