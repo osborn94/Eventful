@@ -10,7 +10,9 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "worker": "ts-node src/jobs/reminder.worker.ts",
-    "build": "tsc",
+    "build": "tsc && cpx \"src/views/**/*\" dist/views"
+
+    <!-- "build": "tsc", -->
     "start": "node dist/server.js"
   },
   "repository": {
@@ -60,6 +62,7 @@
     "@types/qrcode": "^1.5.6",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
+    "cpx": "^1.5.0",
     "nodemon": "^3.1.11",
     "ts-node": "^10.9.2",
     "tsx": "^4.21.0",
