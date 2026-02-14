@@ -10,9 +10,7 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "worker": "ts-node src/jobs/reminder.worker.ts",
-    "build": "tsc && cpx \"src/views/**/*\" dist/views"
-
-    <!-- "build": "tsc", -->
+    "build": "tsc && cpx \"src/views/**/*\" dist/views",
     "start": "node dist/server.js"
   },
   "repository": {
