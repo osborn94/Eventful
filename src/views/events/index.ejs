@@ -1,0 +1,15 @@
+<h1>Upcoming Events 🎉</h1>
+
+<% events.forEach(event => { %>
+  <div>
+    <h3>
+      <a href="/events/<%= event.slug %>">
+        <%= event.title %>
+      </a>
+    </h3>
+    <p><%= event.location %></p>
+    <p>
+      <%= event.price === 0 ? "Free" : "₦" + event.price %>
+    </p>
+  </div>
+<% }) %>
