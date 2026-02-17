@@ -20,6 +20,10 @@ export const createEvent = async (req: AuthRequest, res: Response) => {
       // return res.redirect("/creator")
     }
 
+    const imagePath = req.file
+      ? `/uploads/events/${req.file.filename}`
+      : null
+
     
     const eventDate = new Date(date)
     const now = new Date()
@@ -30,7 +34,7 @@ export const createEvent = async (req: AuthRequest, res: Response) => {
     }
 
     await createEventService(
-      { title, description, location, date: eventDate, price },
+      { title, description, location, date: eventDate, price, image: imagePath },
       req.user.id
     )
 

@@ -1,36 +1,215 @@
-<h2 class="mb-4">Creator Overview</h2>
+<div class="container-fluid py-4">
 
-<div class="row mb-4">
-  <div class="col-md-4">
-    <div class="card shadow-sm p-3">
-      <h6>Total Events</h6>
-      <h2><%= stats?.totalEvents || 0 %></h2>
+  <!-- HEADER -->
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+    <h2 class="fw-bold m-0">Creator Overview</h2>
+
+    <button class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#createEventModal">
+      + Create Event
+    </button>
+  </div>
+
+
+  <!-- STATS -->
+
+  <div class="row g-4 mb-5">
+
+    <div class="col-6 col-lg-3">
+      <div class="stat-card h-100">
+        <h6 class="text-muted">Total Events</h6>
+        <h2 class="fw-bold"><%= stats?.totalEvents || 0 %></h2>
+      </div>
+    </div>
+
+    <div class="col-6 col-lg-3">
+      <div class="stat-card h-100">
+        <h6 class="text-muted">Total Tickets Created</h6>
+        <h2 class="fw-bold"><%= stats?.totalTickets || 0 %></h2>
+      </div>
+    </div>
+
+    <div class="col-6 col-lg-3">
+      <div class="stat-card h-100">
+        <h6 class="text-muted">Revenue</h6>
+        <h2 class="fw-bold">
+          ₦<%= stats?.totalRevenue?.toLocaleString() || 0 %>
+        </h2>
+      </div>
+    </div>
+
+    <div class="col-6 col-lg-3">
+      <div class="stat-card h-100">
+        <h6 class="text-muted">Active Events</h6>
+        <h2 class="fw-bold"><%= stats?.activeEvents || 0 %></h2>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- MY EVENTS -->
+
+  <div class="card shadow-sm border-0 mb-5">
+    <div class="card-body">
+
+      <h4 class="fw-bold mb-4">My Events</h4>
+
+      <% if (myEvents && myEvents.length > 0) { %>
+
+        <div class="row g-4">
+
+          <% myEvents.forEach(event => { %>
+
+            <div class="col-12 col-md-6 col-xl-4">
+
+              <div class="event-card h-100">
+
+                <img 
+                  src="<%= event.image || '/images/default-event.jpeg' %>" 
+                  alt="<%= event.title %>"
+                >
+
+                <div class="p-3">
+
+                  <h5 class="fw-bold"><%= event.title %></h5>
+
+                  <p class="text-muted small mb-2">
+                    <%= new Date(event.date).toDateString() %>
+                  </p>
+
+                  <p class="text-muted small mb-3">
+                    <%= event.location %>
+                  </p>
+
+                  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <span class="badge bg-success">Active</span>
+
+                    <a href="/creator/events/<%= event.slug %>" 
+                       class="btn btn-sm btn-primary">
+                       Manage
+                    </a>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          <% }) %>
+
+        </div>
+
+        <!-- PAGINATION -->
+        <% if (totalEventPages > 1) { %>
+          <nav class="mt-4">
+            <ul class="pagination justify-content-center flex-wrap">
+
+              <% for(let i = 1; i <= totalEventPages; i++) { %>
+
+                <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                  <a class="page-link" href="?page=<%= i %>">
+                    <%= i %>
+                  </a>
+                </li>
+
+              <% } %>
+
+            </ul>
+          </nav>
+        <% } %>
+
+      <% } else { %>
+
+        <div class="text-center py-4">
+          <p class="text-muted">You haven’t created any events yet.</p>
+        </div>
+
+      <% } %>
+
     </div>
   </div>
 
 
+  <!-- ================= TICKET TABLE ================= -->
 
-  <div class="col-md-4">
-    <div class="card shadow-sm p-3">
-      <h6>Total Tickets Sold</h6>
-      <h2><%= stats?.totalTickets || 0 %></h2>
-    </div>
+  <div class="card shadow-sm border-0">
+  <div class="card-body">
+
+    <h4 class="fw-bold mb-4">Recent Ticket Purchases</h4>
+
+    <% if (tickets && tickets.length > 0) { %>
+
+      <div class="custom-table-wrapper">
+
+        <table class="table align-middle table-hover custom-ticket-table">
+
+          <thead>
+            <tr>
+              <th>Attendee</th>
+              <th>Event</th>
+              <th>Ticket #</th>
+              <th>Payment</th>
+              <th>Scan Status</th>
+              <th>Purchased</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% tickets.forEach(ticket => { %>
+              <tr>
+                <td class="fw-semibold">
+                  <%= ticket.user?.name || "N/A" %>
+                </td>
+
+                <td>
+                  <%= ticket.event?.title || "N/A" %>
+                </td>
+
+                <td>
+                  <span class="badge bg-primary">
+                    <%= ticket._id %>
+                  </span>
+                </td>
+
+                <td>
+                  <% if(ticket.paymentStatus === "paid") { %>
+                    <span class="badge bg-success">Paid</span>
+                  <% } else { %>
+                    <span class="badge bg-warning text-dark">Pending</span>
+                  <% } %>
+                </td>
+
+                <td>
+                  <% if(ticket.scanned) { %>
+                    <span class="badge bg-success">Scanned</span>
+                  <% } else { %>
+                    <span class="badge bg-danger">Pending</span>
+                  <% } %>
+                </td>
+
+                <td class="text-muted small">
+                  <%= new Date(ticket.createdAt).toLocaleString() %>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+
+        </table>
+
+      </div>
+
+    <% } else { %>
+
+      <div class="text-center py-4">
+        <p class="text-muted">No ticket purchases yet.</p>
+      </div>
+
+    <% } %>
+
   </div>
 </div>
 
-<h4 class="mb-3">My Events</h4>
-
-<div class="row">
-  <% myEvents.forEach(event => { %>
-    <div class="col-md-6 mb-3">
-      <div class="card shadow-sm p-3">
-        <h5><%= event.title %></h5>
-        <p><%= new Date(event.date).toDateString() %></p>
-        <a href="/creator/events/<%= event.slug %>" class="btn btn-sm btn-outline-primary">
-          Manage Event
-        </a>
-
-      </div>
-    </div>
-  <% }) %>
 </div>

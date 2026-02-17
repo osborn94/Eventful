@@ -5,7 +5,9 @@ import Ticket from "../models/ticket.model.js"
 import type { AuthRequest } from "../middlewares/auth.middleware.js" 
 
 export const dashboard = async (req: AuthRequest, res: Response) => {
- const user = req.user
+  const user = req.user
+  const page = Number(req.query.page) || 1
+  const limit = 3
 
   if (!user) return res.redirect("/login")
 
@@ -13,30 +15,40 @@ export const dashboard = async (req: AuthRequest, res: Response) => {
 
     const totalEvents = await Event.countDocuments({ creator: user.id })
 
-    const totalTickets = await Ticket.countDocuments({
-      user: user.id
-    })
-
     const myEvents = await Event.find({ creator: user.id })
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .sort({ createdAt: -1 })
+
+    const totalEventPages = Math.ceil(totalEvents / limit)
+
+    // IMPORTANT: tickets for creator’s events
+    const tickets = await Ticket.find()
+      .populate("user")
+      .populate("event")
+      .sort({ createdAt: -1 })
 
     return res.render("creator", {
       layout: "layouts/dashboard",
       title: "Creator Dashboard",
       user,
       myEvents,
-      stats: {       
+      tickets,
+      totalEventPages,
+      currentPage: page,
+      stats: {
         totalEvents,
-        totalTickets
+        totalTickets: tickets.length
       }
-     
     })
   }
+
 
   // For Eventee Dashboard
 
   if (user.role === "eventee") {
 
-    const availableEvents = await Event.find({ date: { $gte: new Date() } })
+    const availableEvents = await Event.find({ date: { $gte: new Date() } }).sort({ createdAt: -1 })
     const myTickets = await Ticket.find({ user: user.id }).populate("event")
     const appliedEvents = myTickets.map(ticket => ticket.event)
 

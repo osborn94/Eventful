@@ -8,6 +8,7 @@ export interface IEvent extends Document {
   price: number
   creator: mongoose.Types.ObjectId
   slug: string
+  image?: string
 }
 
 const EventSchema = new Schema<IEvent>(
@@ -18,7 +19,11 @@ const EventSchema = new Schema<IEvent>(
     date: { type: Date, required: true },
     price: { type: Number, default: 0 },
     creator: { type: Schema.Types.ObjectId, ref: "User" },
-    slug: { type: String, unique: true, index: true }
+    slug: { type: String, unique: true, index: true },
+    image: {
+      type: String,
+      default: null
+    }
   },
   { timestamps: true }
 )

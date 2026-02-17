@@ -6,7 +6,7 @@ import { creatorAnalytics } from "../controllers/analytics.controller.js"
 const router = Router()
 
 router.get(
-  "/creator/analytics",
+  "/analytics",
   protect,
   authorize("creator"),
   creatorAnalytics

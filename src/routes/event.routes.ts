@@ -12,6 +12,7 @@ import {
 } from "../controllers/event.controller.js"
 import { protect } from "../middlewares/auth.middleware.js"
 import { authorize } from "../middlewares/role.middleware.js"
+import { upload } from "../middlewares/upload.middleware.js"
 
 const router = Router()
 
@@ -86,10 +87,8 @@ router.delete(
   deleteEvent
 )
 
-
-
 // create event
-router.post("/events", protect,authorize("creator"), createEvent)
+router.post("/events", protect,authorize("creator"), upload.single("image"), createEvent)
 
 // Attend free event
 router.post("/events/:slug/attend", protect, attendFreeEvent)

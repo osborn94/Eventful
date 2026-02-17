@@ -1,10 +1,23 @@
+<style>
+  body {
+    text-align: center;
+  }
+
+  #reader {
+    margin: 0 auto;
+  }
+</style>
+
 <h1>Event Scanner</h1>
 
 <div id="reader" style="width:300px;"></div>
+<div>Face the QrCode of the ticket to the camera to scan</div>
 
 <p id="result"></p>
 
 <script src="https://unpkg.com/html5-qrcode"></script>
+
+
 
 <script>
   function onScanSuccess(decodedText) {

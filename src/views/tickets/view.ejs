@@ -1,21 +1,125 @@
-<h1>Your Tickets</h1>
+<div class="container py-5">
 
-<% if (tickets.length === 0) { %>
-  <p>You have no tickets yet. Browse events and get your tickets now!</p>
-<% } else { %>
+  <!-- ================= HEADER ================= -->
 
-  <% tickets.forEach(ticket => { %>
-    <div class="card mb-3 p-3">
-      <p><strong>Event:</strong> <%= ticket.event.title %></p>
-      <p><strong>Date:</strong> <%= ticket.event.date %></p>
-      <p><strong>Location:</strong> <%= ticket.event.location %></p>
-      <p><strong>Status:</strong> <%= ticket.paymentStatus %></p>
+  <div class="text-center mb-5">
+    <h2 class="fw-bold section-title">Your Tickets 🎟</h2>
+    <p class="text-muted">
+      All your purchased event tickets in one place
+    </p>
+  </div>
 
-      <h5>QR Code:</h5>
-      <img src="<%= ticket.qrCode %>" width="150" />
 
-      <p>Present this at the entrance</p>
+  <% if (!tickets || tickets.length === 0) { %>
+
+    <!-- EMPTY STATE -->
+
+    <div class="text-center py-5">
+      <div class="card border-0 shadow-sm p-5">
+        <h5 class="fw-bold mb-3">No Tickets Yet</h5>
+        <p class="text-muted mb-4">
+          You haven’t purchased any tickets yet.
+        </p>
+        <a href="/events" class="btn btn-primary">
+          Discover Events
+        </a>
+      </div>
     </div>
-  <% }) %>
 
-<% } %>
+  <% } else { %>
+
+    <div class="row g-4 justify-content-center">
+
+      <% tickets.forEach(ticket => { %>
+
+        <div class="col-lg-6">
+
+          <div class="card border-0 shadow-lg h-100 overflow-hidden ticket-card">
+
+            <!-- Event Image -->
+            <img 
+              src="<%= ticket.event.image ? ticket.event.image : '/images/default-event.jpeg' %>" 
+              alt="<%= ticket.event.title %>"
+              style="height:200px; object-fit:cover;"
+            >
+
+            <div class="card-body p-4">
+
+              <!-- Header -->
+              <div class="d-flex justify-content-between align-items-start mb-3">
+
+                <div>
+                  <h5 class="fw-bold mb-1">
+                    <%= ticket.event.title %>
+                  </h5>
+
+                  <p class="text-muted small mb-1">
+                    <i class="bi bi-calendar-event"></i>
+                    <%= new Date(ticket.event.date).toDateString() %>
+                  </p>
+
+                  <p class="text-muted small">
+                    <i class="bi bi-geo-alt"></i>
+                    <%= ticket.event.location %>
+                  </p>
+                </div>
+
+                <!-- Payment Badge -->
+                <% if (ticket.paymentStatus === "paid") { %>
+                  <span class="badge bg-success">Paid</span>
+                <% } else { %>
+                  <span class="badge bg-warning text-dark">Pending</span>
+                <% } %>
+
+              </div>
+
+              <hr>
+
+              <!-- Ticket Info -->
+              <div class="mb-3">
+                <p class="mb-1">
+                  <strong>Ticket Number:</strong>
+                  <span class="badge bg-primary">
+                    <%= ticket._id %>
+                  </span>
+                </p>
+
+                <% if (ticket.scanned) { %>
+                  <span class="badge bg-success">
+                    ✔ Entry Confirmed
+                  </span>
+                <% } else { %>
+                  <span class="badge bg-danger">
+                    ⏳ Not Scanned
+                  </span>
+                <% } %>
+              </div>
+
+              <!-- QR Code Section -->
+              <div class="qr-wrapper text-center p-3 mt-3">
+                <h6 class="fw-semibold mb-3">QR Code</h6>
+
+                <img 
+                  src="<%= ticket.qrCode %>" 
+                  alt="QR Code"
+                  style="width:150px;"
+                >
+
+                <p class="text-muted small mt-3 mb-0">
+                  Present this QR code at the event entrance.
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      <% }) %>
+
+    </div>
+
+  <% } %>
+
+</div>

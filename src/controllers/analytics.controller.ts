@@ -7,5 +7,11 @@ export const creatorAnalytics = async (
   res: Response
 ) => {
   const stats = await getCreatorAnalytics(req.user.id)
-  res.render("analytics", { stats })
+
+  res.render("analytics", {
+    layout: "layouts/dashboard",
+    title: "Analytics",
+    user: req.user,
+    ...stats
+  })
 }

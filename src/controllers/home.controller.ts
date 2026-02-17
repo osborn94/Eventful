@@ -6,7 +6,17 @@ export const homePage = async (req: Request, res: Response) => {
 
   res.render("index", {
     title: "Welcome To Eventful",
-    events
+    events,
+    searchQuery: "",
+    locationQuery: "",
+    featuredEvents: events, // for carousel
+    stats: {
+      totalEvents: events.length,
+      totalAttendees: 0,
+      totalOrganizers: 0,
+      totalCities: 0
+    }
+
   })
 }
 

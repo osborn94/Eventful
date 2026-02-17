@@ -15,7 +15,7 @@
         </button>
       </div>
 
-      <form method="POST" action="/events">
+      <form method="POST" action="/events" enctype="multipart/form-data">
         <div class="modal-body">
 
           <div class="mb-3">
@@ -69,6 +69,19 @@
               min="0"
               value="0"
             >
+          </div>
+          
+          <div class="mb-3">
+            <label class="form-label">Event Image</label>
+            <input 
+              type="file" 
+              name="image" 
+              class="form-control"
+              accept="image/*"
+            >
+            <small class="text-muted">
+              Recommended size: 1200x600px
+            </small>
           </div>
 
         </div>

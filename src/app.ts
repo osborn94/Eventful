@@ -19,10 +19,14 @@ import ticketRoutes from "./routes/ticket.routes.js"
 import paymentRoutes from "./routes/payment.routes.js"
 import scanRoutes from "./routes/scan.routes.js"
 import reminderRoutes from "./routes/reminder.routes.js"
+import analyticsRoutes from "./routes/analytics.routes.js"
 
 import User from "./models/user.model.js"
 import homeRoutes from "./routes/home.routes.js"
 import "./jobs/reminder.worker.js"
+
+import eventApiRoutes from "./routes/api/event.api.routes.js"
+import dashboardApiRoutes from "./routes/api/dashboard.api.routes.js"
 
 
 const __filename = fileURLToPath(import.meta.url)
@@ -71,7 +75,7 @@ app.use(async (req, res, next) => {
   next()
 })
 
-// ROUTES
+// SSR ROUTES
 app.use("/", homeRoutes)
 app.use("/api", testRoutes)
 app.use(authRoutes)
@@ -81,6 +85,14 @@ app.use(ticketRoutes)
 app.use(paymentRoutes)
 app.use(scanRoutes)
 app.use(reminderRoutes)
+app.use(analyticsRoutes)
+
+
+
+// Api Routes
+app.use("/api/events", eventApiRoutes)
+app.use("/api/dashboard", dashboardApiRoutes)
+
 
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 

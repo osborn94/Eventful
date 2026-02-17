@@ -1,52 +1,241 @@
-<h1 class="mb-4 text-center">Welcome to Eventful</h1>
 
-<p class="text-center mb-5">
-  Discover and apply for upcoming events around you.
-</p>
+<section class="hero-section">
+  <div class="container text-center">
 
-<div class="row">
+    <h1 class="hero-title">
+      Discover Events That Matter
+    </h1>
 
-  <% if (events && events.length > 0) { %>
+    <p class="hero-subtitle">
+      Find, book and experience amazing events happening around you.
+    </p>
 
-    <% events.forEach(event => { %>
-      <div class="col-md-4 mb-4">
-        <div class="card shadow-sm h-100">
-          <div class="card-body">
-            <h5 class="card-title"><%= event.title %></h5>
-            
-            <p class="text-muted">
-              <%= new Date(event.date).toDateString() %>
-            </p>
+    <!-- Search -->
+    <div class="row justify-content-center mt-4">
+      <div class="col-lg-8">
+        <form action="/events" method="GET" class="search-bar">
+          <div class="row g-2">
+            <div class="col-md-5">
+              <input 
+                type="text" 
+                class="form-control" 
+                name="search" 
+                placeholder="Search events..."
+                value="<%= searchQuery || '' %>">
+            </div>
 
-            <p>
-              Organized by <strong><%= event.creator.name %></strong>
-            </p>
+            <div class="col-md-4">
+              <input 
+                type="text" 
+                class="form-control" 
+                name="location" 
+                placeholder="Location"
+                value="<%= locationQuery || '' %>">
+            </div>
 
-            <a href="/events/<%= event._id %>" 
-               class="btn btn-success btn-sm">
-               View Details
-            </a>
+            <div class="col-md-3">
+              <button type="submit" class="btn btn-primary w-100">
+                <i class="bi bi-search"></i> Search
+              </button>
+            </div>
           </div>
-        </div>
+        </form>
       </div>
-    <% }) %>
-
-  <% } else { %>
-
-    <div class="text-center">
-      <p>No upcoming events available at the moment.</p>
     </div>
 
-  <% } %>
+    <!-- Trust Line -->
+    <div class="mt-4">
+      <small class="text-light opacity-75">
+        Trusted by <strong><%= stats?.totalAttendees || '10,000+' %></strong> attendees across Nigeria
+      </small>
+    </div>
 
-</div>
+  </div>
+</section>
 
-<!-- Call To Action -->
-<hr class="my-5">
 
-<div class="text-center">
-  <h4>Want to create your own event?</h4>
-  <a href="/register" class="btn btn-primary mt-2">
-    Get Started
-  </a>
-</div>
+ <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <h1 class="display-4 fw-bold text-center">Discover Amazing Events</h1>
+      <p class="lead text-center">Find, book, and experience unforgettable moments.</p>
+    </div>
+  </section>
+
+  <!-- Events Section -->
+  <section class="container my-5">
+
+    <% if (events && events.length > 0) { %>
+
+      <div id="eventCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+
+        <div class="carousel-inner">
+
+          <% events.forEach((event, index) => { %>
+            <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+              
+              <div class="card shadow-lg border-0 event-card">
+                
+                <% if (event.image) { %>
+                  <img src="<%= event.image || '/images/default-event.jpeg' %>" class="img-fluid">
+                <% } else { %>
+                  <img src="/images/default-event.jpeg" class="card-img-top">
+                <% } %>
+
+                <div class="card-body text-center p-4">
+                  <h3 class="fw-bold mb-3"><%= event.title %></h3>
+
+                  <p class="text-muted">
+                    <%= event.description ? event.description.substring(0, 150) : '' %>...
+                  </p>
+
+                  <a href="/events/<%= event.slug %>" class="btn btn-primary px-4 mt-3">
+                    View Event
+                  </a>
+                </div>
+
+              </div>
+
+            </div>
+          <% }) %>
+
+        </div>
+
+        <!-- Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#eventCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon"></span>
+        </button>
+
+        <button class="carousel-control-next" type="button" data-bs-target="#eventCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon"></span>
+        </button>
+
+      </div>
+
+    <% } else { %>
+
+      <div class="text-center py-5">
+        <h4 class="text-muted">No upcoming events available.</h4>
+      </div>
+
+    <% } %>
+
+  </section>
+
+
+<!-- ================= STATS ================= -->
+<section class="container mb-5">
+  <div class="row g-4">
+
+    <div class="col-md-3 col-6">
+      <div class="stat-card">
+        <div class="stat-number">
+          <%= stats?.totalEvents || '500+' %>
+        </div>
+        <div class="stat-label">
+          Events Listed
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-6">
+      <div class="stat-card">
+        <div class="stat-number">
+          <%= stats?.totalAttendees || '10K+' %>
+        </div>
+        <div class="stat-label">
+          Happy Attendees
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-6">
+      <div class="stat-card">
+        <div class="stat-number">
+          <%= stats?.totalOrganizers || '200+' %>
+        </div>
+        <div class="stat-label">
+          Event Organizers
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3 col-6">
+      <div class="stat-card">
+        <div class="stat-number">
+          <%= stats?.totalCities || '50+' %>
+        </div>
+        <div class="stat-label">
+          Cities Covered
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ================= WHY CHOOSE US ================= -->
+<section class="container mb-5">
+  <h2 class="section-title text-center">
+    Why Choose Eventful?
+  </h2>
+
+  <div class="row g-4 mt-4">
+
+    <div class="col-md-4 text-center">
+      <div class="feature-icon">
+        <i class="bi bi-search"></i>
+      </div>
+      <h4>Easy Discovery</h4>
+      <p class="text-muted">
+        Powerful filters and smart search help you find the perfect event instantly.
+      </p>
+    </div>
+
+    <div class="col-md-4 text-center">
+      <div class="feature-icon">
+        <i class="bi bi-shield-check"></i>
+      </div>
+      <h4>Secure Payments</h4>
+      <p class="text-muted">
+        Safe transactions and instant confirmations with QR verification.
+      </p>
+    </div>
+
+    <div class="col-md-4 text-center">
+      <div class="feature-icon">
+        <i class="bi bi-people"></i>
+      </div>
+      <h4>Built for Everyone</h4>
+      <p class="text-muted">
+        From concerts to business conferences — we power all event types.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ================= CTA ================= -->
+<section class="container">
+  <div class="cta-section text-center">
+
+    <h2 class="mb-3">
+      Ready to Host Your Own Event?
+    </h2>
+
+    <p class="mb-4" style="font-size: 1.1rem;">
+      Join hundreds of organizers creating amazing experiences.
+    </p>
+
+    <a href="/login" class="btn btn-primary btn-lg me-2">
+      Create Event
+    </a>
+
+    <a href="/register" class="btn btn-outline-light btn-lg">
+      Get Started
+    </a>
+
+  </div>
+</section>

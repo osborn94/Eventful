@@ -1,15 +1,84 @@
-<h1>Upcoming Events 🎉</h1>
+<div class="container-fluid py-5">
 
-<% events.forEach(event => { %>
-  <div>
-    <h3>
-      <a href="/events/<%= event.slug %>">
-        <%= event.title %>
-      </a>
-    </h3>
-    <p><%= event.location %></p>
-    <p>
-      <%= event.price === 0 ? "Free" : "₦" + event.price %>
+  <!-- PAGE HEADER -->
+
+  <div class="text-center mb-5">
+    <h2 class="fw-bold section-title">Upcoming Events</h2>
+    <p class="text-muted">
+      Discover amazing experiences created by our community
     </p>
   </div>
-<% }) %>
+
+
+  <!-- EVENTS GRID -->
+
+  <% if (events && events.length > 0) { %>
+
+    <div class="row g-4">
+
+      <% events.forEach(event => { %>
+
+        <div class="col-lg-4 col-md-6">
+
+          <div class="event-card h-100">
+
+            <!-- Event Image -->
+            <img 
+              src="<%= event.image || '/images/default-event.jpeg' %>" 
+              alt="<%= event.title %>"
+            >
+
+            <div class="p-3 d-flex flex-column">
+
+              <!-- Date Badge -->
+              <span class="badge bg-primary mb-2">
+                <%= new Date(event.date).toDateString() %>
+              </span>
+
+              <!-- Title -->
+              <h5 class="fw-bold mb-2">
+                <%= event.title %>
+              </h5>
+
+              <!-- Location -->
+              <p class="text-muted small mb-2">
+                <i class="bi bi-geo-alt"></i>
+                <%= event.location %>
+              </p>
+
+              <!-- Price -->
+              <p class="fw-semibold mb-3" style="color: var(--accent);">
+                <%= event.price === 0 
+                    ? "Free" 
+                    : "₦" + Number(event.price).toLocaleString() %>
+              </p>
+
+              <!-- Button -->
+              <a href="/events/<%= event.slug %>" 
+                 class="btn btn-primary mt-auto w-100">
+                View Details
+              </a>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      <% }) %>
+
+    </div>
+
+  <% } else { %>
+
+    <!-- EMPTY STATE -->
+    <div class="text-center py-5">
+      <h5 class="fw-bold">No Upcoming Events</h5>
+      <p class="text-muted">
+        There are currently no upcoming events. Please check back soon.
+      </p>
+    </div>
+
+  <% } %>
+
+</div>

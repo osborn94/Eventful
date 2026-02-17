@@ -1,14 +1,111 @@
-<h1><%= event.title %></h1>
-<p><%= event.description %></p>
-<p><%= event.location %></p>
-<p>
-  <%= event.price === 0 ? "Free Event" : "₦" + event.price %>
-</p>
+<div class="container py-5">
 
-<% if (event.price === 0) { %>
-  <form method="POST" action="/events/<%= event.slug %>/attend">
-    <button>Attend Free Event</button>
-  </form>
-<% } else { %>
-  <a href="/checkout/<%= event._id %>">Buy Ticket</a>
-<% } %>
+  <div class="row g-5">
+
+    <!-- LEFT SIDE - EVENT DETAILS -->
+    <div class="col-lg-8">
+
+      <!-- Event Card -->
+      <div class="card border-0 shadow-sm p-4 mb-4">
+
+        <!-- Title -->
+        <h1 class="fw-bold mb-3">
+          <%= event.title %>
+        </h1>
+
+        <!-- Meta Info -->
+        <p class="text-muted mb-2">
+          <i class="bi bi-geo-alt"></i> <%= event.location %>
+        </p>
+
+        <p class="text-muted mb-4">
+          <i class="bi bi-calendar-event"></i>
+          <%= new Date(event.date).toDateString() %>
+        </p>
+
+        <hr>
+
+        <!-- Description -->
+        <h5 class="fw-semibold mb-3">About This Event</h5>
+
+        <p style="line-height: 1.8;">
+          <%= event.description %>
+        </p>
+
+      </div>
+
+      <!-- Share Section -->
+      <div class="card border-0 shadow-sm p-4">
+
+        <h6 class="fw-bold mb-3">Share this event</h6>
+
+        <% const shareUrl = `https://localhost:5000/events/${event.slug}`; %>
+        <% const shareText = encodeURIComponent(event.title); %>
+
+        <div class="d-flex gap-2">
+
+          <a target="_blank"
+             href="https://twitter.com/intent/tweet?url=<%= shareUrl %>&text=<%= shareText %>"
+             class="btn btn-outline-dark btn-sm">
+             X
+          </a>
+
+          <a target="_blank"
+             href="https://www.facebook.com/sharer/sharer.php?u=<%= shareUrl %>"
+             class="btn btn-outline-primary btn-sm">
+             Facebook
+          </a>
+
+          <a target="_blank"
+             href="https://wa.me/?text=<%= shareText %> <%= shareUrl %>"
+             class="btn btn-outline-success btn-sm">
+             WhatsApp
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- RIGHT SIDE - TICKET SECTION -->
+    <div class="col-lg-4">
+
+      <div class="card border-0 shadow-lg p-4 ticket-card">
+
+        <!-- Price -->
+        <h3 class="fw-bold mb-3">
+          <%= event.price === 0 
+              ? "Free Event" 
+              : "₦" + Number(event.price).toLocaleString() %>
+        </h3>
+
+        <p class="text-muted small mb-4">
+          Secure your spot now.
+        </p>
+
+        <% if (event.price === 0) { %>
+
+          <form method="POST" action="/events/<%= event.slug %>/attend">
+            <button class="btn btn-primary w-100">
+              Attend Free Event
+            </button>
+          </form>
+
+        <% } else { %>
+
+          <a href="/checkout/<%= event._id %>" 
+             class="btn btn-primary w-100">
+             Buy Ticket
+          </a>
+
+        <% } %>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

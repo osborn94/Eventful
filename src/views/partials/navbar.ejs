@@ -4,6 +4,10 @@
         <a class="logo navbar-brand" href="/">
             <i class="bi bi-calendar-event"></i> Eventful
         </a>
+        <button id="themeToggle" class="theme-toggle">
+            🌙
+        </button>
+
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="background: var(--accent);">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -14,6 +18,7 @@
                 
                 <% if (user) { %>
                     <!-- Authenticated User Menu -->
+                     <!-- <a class="nav-link" href="/dashboard/creator">Dashboard</a> -->
                     <a class="nav-link" href="/my-events">My Events</a>
                     <a class="nav-link" href="/create-event">Create Event</a>
                     <div class="nav-item dropdown">
@@ -40,6 +45,30 @@
         </div>
     </div>
 </nav>
+
+<script>
+  const toggleBtn = document.getElementById("themeToggle");
+  const body = document.body;
+
+  // Load saved theme
+  if (localStorage.getItem("theme") === "dark") {
+    body.classList.add("dark-mode");
+    toggleBtn.textContent = "☀️";
+  }
+
+  toggleBtn.addEventListener("click", () => {
+    body.classList.toggle("dark-mode");
+
+    if (body.classList.contains("dark-mode")) {
+      localStorage.setItem("theme", "dark");
+      toggleBtn.textContent = "☀️";
+    } else {
+      localStorage.setItem("theme", "light");
+      toggleBtn.textContent = "🌙";
+    }
+  });
+</script>
+
 
 
 
