@@ -53,9 +53,13 @@ export const viewUserTickets = async (req: AuthRequest, res: Response) => {
     .populate("event")
     .populate("user")
 
+  
+  const validTickets = tickets.filter(ticket => ticket.event)    
+
+
   res.render("tickets/view", {
     title: "My Tickets",
-    tickets
+    tickets: validTickets
   })
 }
 

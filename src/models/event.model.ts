@@ -28,4 +28,13 @@ const EventSchema = new Schema<IEvent>(
   { timestamps: true }
 )
 
+// Delete associated tickets when an event is deleted
+EventSchema.pre("findOneAndDelete", async function () {
+  const event = await this.model.findOne(this.getQuery())
+
+  if (event) {
+    await mongoose.model("Ticket").deleteMany({ event: event._id })
+  }
+})
+
 export default mongoose.model<IEvent>("Event", EventSchema)

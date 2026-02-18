@@ -20,7 +20,7 @@ const router = Router()
 
 router.get("/events", listEvents)
 
-router.get("/events/:slug", protect, eventDetails)
+router.get("/events/:slug", eventDetails)
 
 // Creator
 router.get(

@@ -1,7 +1,6 @@
 import type { Request, Response } from "express"
 import Event from "../models/event.model.js"
 import Ticket from "../models/ticket.model.js"
-// import Application from "../models/application.model.js"
 import type { AuthRequest } from "../middlewares/auth.middleware.js" 
 
 export const dashboard = async (req: AuthRequest, res: Response) => {
@@ -11,8 +10,11 @@ export const dashboard = async (req: AuthRequest, res: Response) => {
 
   if (!user) return res.redirect("/login")
 
+  /* CREATOR DASHBOARD */
+
   if (user.role === "creator") {
 
+    // Get creator events
     const totalEvents = await Event.countDocuments({ creator: user.id })
 
     const myEvents = await Event.find({ creator: user.id })
@@ -22,11 +24,24 @@ export const dashboard = async (req: AuthRequest, res: Response) => {
 
     const totalEventPages = Math.ceil(totalEvents / limit)
 
-    // IMPORTANT: tickets for creator’s events
-    const tickets = await Ticket.find()
+    // Get event IDs for this creator
+    const creatorEvents = await Event.find({ creator: user.id }).select("_id")
+    const eventIds = creatorEvents.map(e => e._id)
+
+    // Fetch ONLY tickets for this creator's events
+    const tickets = await Ticket.find({
+      event: { $in: eventIds }
+    })
       .populate("user")
       .populate("event")
       .sort({ createdAt: -1 })
+
+    // Calculate proper stats (scoped)
+    const totalTickets = tickets.length
+
+    const totalRevenue = tickets
+      .filter(ticket => ticket.paymentStatus === "paid")
+      .reduce((sum, ticket) => sum + (ticket.amount || 0), 0)
 
     return res.render("creator", {
       layout: "layouts/dashboard",
@@ -38,19 +53,26 @@ export const dashboard = async (req: AuthRequest, res: Response) => {
       currentPage: page,
       stats: {
         totalEvents,
-        totalTickets: tickets.length
+        totalTickets,
+        totalRevenue
       }
     })
   }
 
 
-  // For Eventee Dashboard
+  /* ===================== EVENTEE DASHBOARD ===================== */
 
   if (user.role === "eventee") {
 
-    const availableEvents = await Event.find({ date: { $gte: new Date() } }).sort({ createdAt: -1 })
-    const myTickets = await Ticket.find({ user: user.id }).populate("event")
-    const appliedEvents = myTickets.map(ticket => ticket.event)
+    const availableEvents = await Event.find({
+      date: { $gte: new Date() }
+    }).sort({ createdAt: -1 })
+
+    const myTickets = await Ticket.find({
+      user: user.id
+    }).populate("event")
+
+    const appliedEvents = myTickets.map(ticket => ticket.event).filter(event => event !== null)
 
     return res.render("eventee", {
       layout: "layouts/dashboard",
@@ -63,12 +85,3 @@ export const dashboard = async (req: AuthRequest, res: Response) => {
     })
   }
 }
-
-
-export const creatorDashboard = (req: Request, res: Response) => {
-  res.render("dashboard/creator", {
-    title: "Creator Dashboard",
-    user: req.user
-  });
-};
-
