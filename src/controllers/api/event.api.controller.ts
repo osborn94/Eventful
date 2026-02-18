@@ -81,8 +81,6 @@ export const listEventsApi = async (req: Request, res: Response) => {
 }
 
 
-
-
 // GET SINGLE EVENT BY SLUG
 export const getEventDetailsApi = async (req: Request<{ slug: string }>, res: Response) => {
   try {

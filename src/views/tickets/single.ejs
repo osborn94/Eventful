@@ -1,0 +1,137 @@
+<div class="container py-5">
+
+  <!-- ================= HEADER ================= -->
+
+  <div class="text-center mb-5">
+    <h2 class="fw-bold section-title">Ticket Details 🎟</h2>
+    <p class="text-muted">
+      View your ticket information below
+    </p>
+  </div>
+
+
+  <% if (!ticket) { %>
+
+    <!-- NOT FOUND STATE -->
+
+    <div class="text-center py-5">
+      <div class="card border-0 shadow-sm p-5">
+        <h5 class="fw-bold mb-3">Ticket Not Found</h5>
+        <p class="text-muted mb-4">
+          The ticket you are looking for does not exist.
+        </p>
+        <a href="/tickets" class="btn btn-primary">
+          Back to My Tickets
+        </a>
+      </div>
+    </div>
+
+  <% } else { %>
+
+    <div class="row justify-content-center">
+
+      <div class="col-lg-6">
+
+        <div class="card border-0 shadow-lg overflow-hidden ticket-card">
+
+          <!-- Event Image -->
+          <img 
+            src="<%= ticket.event.image ? ticket.event.image : '/images/default-event.jpeg' %>" 
+            alt="<%= ticket.event.title %>"
+            style="height:220px; object-fit:cover;"
+          >
+
+          <div class="card-body p-4">
+
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-start mb-3">
+
+              <div>
+                <h4 class="fw-bold mb-1">
+                  <%= ticket.event.title %>
+                </h4>
+
+                <p class="text-muted small mb-1">
+                  <i class="bi bi-calendar-event"></i>
+                  <%= new Date(ticket.event.date).toDateString() %>
+                </p>
+
+                <p class="text-muted small">
+                  <i class="bi bi-geo-alt"></i>
+                  <%= ticket.event.location %>
+                </p>
+              </div>
+
+              <!-- Payment Badge -->
+              <% if (ticket.paymentStatus === "paid") { %>
+                <span class="badge bg-success">Paid</span>
+              <% } else { %>
+                <span class="badge bg-warning text-dark">Pending</span>
+              <% } %>
+
+            </div>
+
+            <hr>
+
+            <!-- Ticket Info -->
+            <div class="mb-3">
+
+              <p class="mb-2">
+                <strong>Ticket ID:</strong>
+                <span class="badge bg-primary">
+                  <%= ticket._id %>
+                </span>
+              </p>
+
+              <p class="mb-2">
+                <strong>Purchased On:</strong>
+                <%= new Date(ticket.createdAt).toDateString() %>
+              </p>
+
+              <% if (ticket.scanned) { %>
+                <span class="badge bg-success">
+                  ✔ Entry Confirmed
+                </span>
+              <% } else { %>
+                <span class="badge bg-danger">
+                  ⏳ Not Scanned
+                </span>
+              <% } %>
+
+            </div>
+
+            <!-- QR Code Section -->
+            <div class="qr-wrapper text-center p-4 mt-4 border rounded">
+
+              <h6 class="fw-semibold mb-3">QR Code</h6>
+
+              <img 
+                src="<%= ticket.qrCode %>" 
+                alt="QR Code"
+                style="width:180px;"
+              >
+
+              <p class="text-muted small mt-3 mb-0">
+                Present this QR code at the event entrance.
+              </p>
+
+            </div>
+
+            <!-- Back Button -->
+            <div class="text-center mt-4">
+              <a href="/tickets" class="btn btn-outline-secondary">
+                ← Back to My Tickets
+              </a>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  <% } %>
+
+</div>

@@ -40,8 +40,12 @@ export const viewTicket = async (
     .populate("user")
 
   if (!ticket) return res.status(404).send("Ticket not found")
+  
+  if (ticket.user._id.toString() !== req.user.id) {
+    return res.status(403).send("Access denied, Unauthorized user")
+  }
 
-  res.render("tickets/view", {title: ticket.event, ticket })
+  res.render("tickets/single", {title: ticket.event, ticket })
 }
 
 export const viewUserTickets = async (req: AuthRequest, res: Response) => {

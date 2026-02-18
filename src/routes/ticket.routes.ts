@@ -2,7 +2,8 @@ import { Router } from "express"
 import { protect } from "../middlewares/auth.middleware.js"
 import {
   attendFreeEvent,
-  viewUserTickets
+  viewUserTickets,
+  viewTicket
 } from "../controllers/ticket.controller.js"
 
 const router = Router()
@@ -16,10 +17,10 @@ router.post(
 router.get("/tickets", protect, viewUserTickets)
 
 
-// router.get(
-//   "/tickets/:id",
-//   protect,
-//   viewTicket
-// )
+router.get(
+  "/tickets/:id",
+  protect,
+  viewTicket
+)
 
 export default router

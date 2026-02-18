@@ -13,33 +13,21 @@
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <div class="nav-links navbar-nav">
+               <% if (!user) { %>
                 <a class="nav-link" href="/">Home</a>
                 <a class="nav-link" href="/events">Events</a>
+                <a class="nav-link" href="/login">Login</a>
+                <a class="nav-link btn-primary ms-lg-3" href="/register">Sign Up</a>
+                <% } %>
                 
-                <% if (user) { %>
+                <% if (user && user.role === "creator") { %>
                     <!-- Authenticated User Menu -->
                      <!-- <a class="nav-link" href="/dashboard/creator">Dashboard</a> -->
-                    <a class="nav-link" href="/my-events">My Events</a>
-                    <a class="nav-link" href="/create-event">Create Event</a>
-                    <div class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-person-circle"></i> <%= user.name || user.email %>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown" style="background: var(--white);">
-                            <li><a class="dropdown-item" href="/profile">Profile</a></li>
-                            <li><a class="dropdown-item" href="/my-tickets">My Tickets</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <form action="/logout" method="POST" style="margin: 0;">
-                                    <button type="submit" class="dropdown-item text-danger">Logout</button>
-                                </form>
-                            </li>
-                        </ul>
-                    </div>
-                <% } else { %>
-                    <!-- Guest User Menu -->
-                    <a class="nav-link" href="/login">Login</a>
-                    <a class="nav-link btn-primary ms-lg-3" href="/register">Sign Up</a>
+                    <a class="nav-link" href="/dashboard/creator">Return To Dashboard</a>
+                    <% } %>
+                    
+                <% if (user && user.role === "eventee") { %>
+                    <a class="nav-link" href="/dashboard/eventee">Return To Dashboard</a>
                 <% } %>
             </div>
         </div>

@@ -18,39 +18,7 @@ const router = Router()
 
 // Public
 
-/**
- * @swagger
- * /events:
- *   get:
- *     summary: Get all events
- *     tags: [Events]
- *     responses:
- *       200:
- *         description: Success
- */
 router.get("/events", listEvents)
-
-/**
- * @swagger
- * /events/{slug}:
- *   get:
- *     summary: Get event details by slug
- *     tags: [Events]
- *     security:
- *       - cookieAuth: []
- *     parameters:
- *       - in: path
- *         name: slug
- *         required: true
- *         schema:
- *           type: string
- *         description: Unique event slug
- *     responses:
- *       200:
- *         description: Event details
- *       404:
- *         description: Event not found
- */
 
 router.get("/events/:slug", protect, eventDetails)
 

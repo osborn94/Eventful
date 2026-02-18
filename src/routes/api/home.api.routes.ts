@@ -1,8 +1,19 @@
-// import { Router } from "express"
-// import { homePage } from "../controllers/home.controller.js"
+import { Router } from "express"
+import { homePageApi } from "../../controllers/api/home.api.controller.js"
 
-// const router = Router()
+const router = Router()
 
-// router.get("/", homePage)
+/**
+ * @swagger
+ * /home:
+ *   get:
+ *     summary: Get homepage data
+ *     tags: [Home]
+ *     responses:
+ *       200:
+ *         description: Homepage events and stats
+ */
 
-// export default router
+router.get("/", homePageApi)
+
+export default router

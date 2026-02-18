@@ -25,8 +25,12 @@ import User from "./models/user.model.js"
 import homeRoutes from "./routes/home.routes.js"
 import "./jobs/reminder.worker.js"
 
+import authApiRoutes from "./routes/api/auth.api.routes.js"
 import eventApiRoutes from "./routes/api/event.api.routes.js"
 import dashboardApiRoutes from "./routes/api/dashboard.api.routes.js"
+import analyticsApiRoutes from "./routes/api/analytics.api.routes.js"
+import homeApiRoutes from "./routes/api/home.api.routes.js"
+import ticketApiRoutes from "./routes/api/ticket.api.routes.js"
 
 
 const __filename = fileURLToPath(import.meta.url)
@@ -89,9 +93,17 @@ app.use(analyticsRoutes)
 
 
 
+
 // Api Routes
-app.use("/api/events", eventApiRoutes)
-app.use("/api/dashboard", dashboardApiRoutes)
+app.use("/api/v1/auth", authApiRoutes)
+app.use("/api/v1/events", eventApiRoutes)
+app.use("/api/v1/dashboard", dashboardApiRoutes)
+app.use("/api/v1/analytics", analyticsApiRoutes)
+app.use("/api/v1/home", homeApiRoutes)
+app.use("/api/v1/tickets", ticketApiRoutes)
+
+
+
 
 
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec))
