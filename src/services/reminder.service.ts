@@ -1,4 +1,4 @@
-import reminderQueue from "../jobs/reminder.queue.js"
+import { reminderQueue } from "../jobs/reminder.queue.js"  // named import
 
 export const scheduleReminder = async (
   email: string,
@@ -11,15 +11,16 @@ export const scheduleReminder = async (
   if (delay <= 0) return
 
   await reminderQueue.add(
+    "send-reminder",  // job name — required by BullMQ
     {
       email,
       eventTitle,
-      eventDate
+      eventDate,
     },
     {
       delay,
-      attempts: 3,
-      backoff: 5000
+      attempts: 2,
+      backoff: { type: "fixed", delay: 5000 },
     }
   )
 }

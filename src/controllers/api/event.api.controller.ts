@@ -9,8 +9,6 @@ import {
 import type { AuthRequest } from "../../middlewares/auth.middleware.js"
 
 
-
-
 // CREATE EVENT
 export const createEventApi = async (req: AuthRequest, res: Response) => {
   try {
@@ -59,8 +57,6 @@ export const createEventApi = async (req: AuthRequest, res: Response) => {
 }
 
 
-
-
 // LIST ALL EVENTS
 export const listEventsApi = async (req: Request, res: Response) => {
   try {
@@ -105,8 +101,6 @@ export const getEventDetailsApi = async (req: Request<{ slug: string }>, res: Re
     })
   }
 }
-
-
 
 
 // ATTEND FREE EVENT

@@ -2,7 +2,8 @@ import { Router } from "express"
 import { protect } from "../middlewares/auth.middleware.js"
 import { authorize } from "../middlewares/role.middleware.js"
 import { scanTicket } from "../controllers/scan.controller.js"
-import { authLimiter } from "../middlewares/rateLimit.js"
+// import { authLimiter } from "../middlewares/rateLimit.js"
+import { rateLimitMiddleware } from "../middlewares/rateLimitMiddleware.js"
 
 const router = Router()
 
@@ -25,7 +26,7 @@ router.get(
 
 router.post(
   "/creator/scan",
-  authLimiter,
+  rateLimitMiddleware,
   protect,
   authorize("creator"),
   scanTicket

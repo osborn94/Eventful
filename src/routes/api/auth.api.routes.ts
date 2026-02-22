@@ -1,6 +1,7 @@
 import { Router } from "express"
 import { registerApi, loginApi, logoutApi } from "../../controllers/api/auth.api.controller.js"
-import { authLimiter } from "../../middlewares/rateLimit.js"
+// import { authLimiter } from "../../middlewares/rateLimit.js"
+import { rateLimitMiddleware } from "../../middlewares/rateLimitMiddleware.js"
 
 const router = Router()
 
@@ -60,7 +61,7 @@ router.post("/register", registerApi)
  *       401:
  *         description: Invalid credentials
  */
-router.post("/login", authLimiter, loginApi)
+router.post("/login", rateLimitMiddleware, loginApi)
 
 /**
  * @swagger

@@ -60,7 +60,7 @@ export const dashboard = async (req: AuthRequest, res: Response) => {
   }
 
 
-  /* ===================== EVENTEE DASHBOARD ===================== */
+  /* EVENTEE DASHBOARD  */
 
   if (user.role === "eventee") {
 

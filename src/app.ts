@@ -9,6 +9,10 @@ import { swaggerSpec } from "./config/swagger.js"
 import { errorHandler } from "./middlewares/error.middleware.js"
 import { verifyToken } from "./utils/jwt.js"
 import methodOverride from "method-override"
+// import rateLimiter from "./middlewares/rateLimit.js"
+import { rateLimitMiddleware } from "./middlewares/rateLimitMiddleware.js"
+import "./jobs/index.js"
+
 
 import testRoutes from "./routes/test.routes.js"
 import authRoutes from "./routes/auth.routes.js"
@@ -45,6 +49,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, "public")))
+// app.use(rateLimiter)
+app.use(rateLimitMiddleware)
 
 app.use(methodOverride("_method"))
 
@@ -92,8 +98,6 @@ app.use(reminderRoutes)
 app.use(analyticsRoutes)
 
 
-
-
 // Api Routes
 app.use("/api/v1/auth", authApiRoutes)
 app.use("/api/v1/events", eventApiRoutes)
@@ -101,8 +105,6 @@ app.use("/api/v1/dashboard", dashboardApiRoutes)
 app.use("/api/v1/analytics", analyticsApiRoutes)
 app.use("/api/v1/home", homeApiRoutes)
 app.use("/api/v1/tickets", ticketApiRoutes)
-
-
 
 
 

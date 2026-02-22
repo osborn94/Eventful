@@ -7,6 +7,8 @@ import {
   attendFreeEventService
 } from "../services/event.service.js"
 import type { AuthRequest } from "../middlewares/auth.middleware.js"
+import { redisClient } from "../config/redis.js"
+import { invalidateEventsCache } from "../services/event.service.js"
 
 // create event service
 
@@ -57,8 +59,13 @@ export const createEvent = async (req: AuthRequest, res: Response) => {
 // }
 
 export const listEvents = async (req: Request, res: Response) => {
-  const events = await getAllEventsService()
-  res.render("events/index", {title: "Events", events })
+  try {
+    const events = await getAllEventsService()
+    res.render("events/index", { title: "Events", events })
+  } catch (err) {
+    console.error("❌ listEvents error:", err)
+    res.status(500).send("Failed to load events")
+  }
 }
 
 
@@ -154,6 +161,8 @@ export const updateEvent = async (req: AuthRequest<UpdateEventParams>, res: Resp
 
   await event.save()
 
+  await invalidateEventsCache()
+
   // res.redirect(`/creator/events/${event.slug}`)
   res.redirect("/dashboard/creator")
 }
@@ -170,6 +179,8 @@ export const deleteEvent = async (req: AuthRequest<DeleteEventParams>, res: Resp
 
 
   await event.deleteOne()
+
+  await invalidateEventsCache()
 
   res.redirect("/dashboard/creator")
 }

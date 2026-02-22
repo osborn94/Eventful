@@ -1,21 +1,19 @@
-import Bull from "bull"
+import { Queue } from "bullmq"
+import { bullQueueConnection } from "../config/redis.js"
 
-const reminderQueue = new Bull("reminderQueue", {
-  redis: {
-    host: "127.0.0.1",
-    port: 6379
-  }
+export const reminderQueue = new Queue("event-reminders", {
+  connection: bullQueueConnection,
 })
-
-export default reminderQueue
 
 
 // import Bull from "bull"
-// import redis from "../config/redis.js"
 
 // const reminderQueue = new Bull("reminderQueue", {
-//     createClient: () => redis
-
+//   redis: {
+//     host: "127.0.0.1",
+//     port: 6379
+//   }
 // })
 
 // export default reminderQueue
+

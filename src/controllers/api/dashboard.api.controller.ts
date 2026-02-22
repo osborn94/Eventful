@@ -16,9 +16,7 @@ export const dashboardApi = async (req: AuthRequest, res: Response) => {
       })
     }
 
-    // =========================
     // CREATOR DASHBOARD
-    // =========================
     if (user.role === "creator") {
 
       const totalEvents = await Event.countDocuments({ creator: user.id })
@@ -55,10 +53,7 @@ export const dashboardApi = async (req: AuthRequest, res: Response) => {
       })
     }
 
-
-    // =========================
     // EVENTEE DASHBOARD
-    // =========================
     if (user.role === "eventee") {
 
       const availableEvents = await Event.find({

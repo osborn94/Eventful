@@ -5,8 +5,6 @@ import Event from "../../models/event.model.js"
 import Ticket from "../../models/ticket.model.js"
 
 
-
-
 // ATTEND FREE EVENT
 export const attendFreeEventApi = async (
   req: AuthRequest<{ slug: string }>,

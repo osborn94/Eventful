@@ -1,11 +1,11 @@
-import rateLimit from "express-rate-limit"
+// import { RedisStore } from "rate-limit-redis"
+import { RateLimiterRedis } from "rate-limiter-flexible"
+import { redisClient } from "../config/redis.js"
 
-export const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 50,
-  handler: (req, res) => {
-    res.status(429).render("login",{
-        error: "Too many login attempts. Please try again later."
-    })
-  }
+export const rateLimiter = new RateLimiterRedis({
+  storeClient: redisClient,
+  keyPrefix: "middleware",
+  points: 100,       // requests
+  duration: 15 * 60, // per 15 minutes
 })
+
