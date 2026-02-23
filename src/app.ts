@@ -37,6 +37,9 @@ import homeApiRoutes from "./routes/api/home.api.routes.js"
 import ticketApiRoutes from "./routes/api/ticket.api.routes.js"
 
 
+// works for test
+/* const _dirname = typeof __dirname !== "undefined" ? __dirname : path.resolve(); */
+
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 

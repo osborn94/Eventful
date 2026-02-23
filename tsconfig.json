@@ -2,7 +2,7 @@
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
     // File Layout
-    "rootDir": "./src",
+    "rootDir": ".",
     "outDir": "./dist",
     
     
@@ -13,7 +13,7 @@
     "allowSyntheticDefaultImports": true,
     "module": "nodenext",
     "target": "esnext",
-    "types": ["node"],
+    "types": ["jest", "node"],
     // For nodejs:
     // "lib": ["esnext"],
     // "types": ["node"],
@@ -44,5 +44,6 @@
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
-  }
+  },
+  "include": ["src", "tests"]
 }
